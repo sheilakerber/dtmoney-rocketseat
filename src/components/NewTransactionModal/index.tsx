@@ -1,11 +1,12 @@
 // import { prependOnceListener } from 'process'
-import { FormEvent, useState } from 'react'
+import { FormEvent, useState, useContext } from 'react'
 import Modal  from 'react-modal'
 import incomeImg from '../../assets/income.svg'
 import outcomeImg from '../../assets/outcome.svg'
 import closeImg from '../../assets/close.svg'
 import { Container, TransactionTypeContainer, RadioBox } from './styles'
 import { api } from '../../services/api'
+import { TransactionsContext } from '../../TransactionsContext'
 
 interface NewTransactionModalProps{
     isOpen: boolean;
@@ -13,30 +14,26 @@ interface NewTransactionModalProps{
 }
 
 export function NewTransactionModal({ isOpen, onRequestClose }: NewTransactionModalProps){
+
+    const { createTransaction } = useContext(TransactionsContext)
+
     const [title, setTitle] = useState('')          // estado inicial do titulo
-    const [value, setValue] = useState(0)           // estado inicial do valor
+    const [amount, setAmount] = useState(0)           // estado inicial do valor
     const [category, setCategory] = useState('')    // estado inicial da categoria
     const [type, setType] = useState('deposit')     // para armazenar a informac de qual botao foi selecionado
     
     // para adicionar uma nova transacao na api
     function handleCreateNewTransaction(event: FormEvent) {
         event.preventDefault();     // previne reset do form
-
-        // verificando os dados inseridos no form
-        console.log(
-            title, value, category, type
-        )
-
-        // passando dados os salvos para a api
-        const data = {
+        createTransaction ({
             title,
-            value,
+            amount,
             category,
             type
-        }
+        })
 
-        api.post('./transactions', data)
-
+        // verificando os dados inseridos no form
+        console.log(title, amount, category, type)
     }
 
     return(
@@ -67,8 +64,8 @@ export function NewTransactionModal({ isOpen, onRequestClose }: NewTransactionMo
                 <input
                     type="number"
                     placeholder="Valor"
-                    value={value}
-                    onChange={event => setValue(Number(event.target.value))}
+                    value={amount}
+                    onChange={event => setAmount(Number(event.target.value))}
                 />
 
                 <TransactionTypeContainer>

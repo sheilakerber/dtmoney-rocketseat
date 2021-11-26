@@ -8,7 +8,7 @@ import { Container } from "./styles";
 export function Summary(){
 
     // utilizando contexto para compartilhar dados da TransactionsTable com o Summary
-    const transactions = useContext(TransactionsContext)
+    const { transactions } = useContext(TransactionsContext)
 
     return(
         <Container>
