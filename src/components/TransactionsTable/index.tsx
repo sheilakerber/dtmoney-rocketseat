@@ -11,7 +11,6 @@ interface Transaction {
     createdAt: string
 }
 
-
 export function TransactionsTable() {
 
     const [transactions, setTransactions] = useState<Transaction[]>([])
@@ -38,16 +37,17 @@ export function TransactionsTable() {
                         return (
                             <tr key={transaction.id}>
                                 <td>{transaction.title}</td>
-                                <td className={transaction.type}>{transaction.amount}</td>
+                                <td className={transaction.type}>
+                                    {new Intl.NumberFormat('pt-BR', {
+                                        style: 'currency',
+                                        currency: 'BRL'
+                                    }).format(transaction.amount)}
+                                </td>
                                 <td>{transaction.category}</td>
                                 <td>{transaction.createdAt}</td>
                             </tr>
                         )
                     })}
-
-                   
-
-                  
                 </tbody>
             </table>
         </Container>
