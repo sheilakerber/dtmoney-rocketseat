@@ -23,14 +23,22 @@ export function NewTransactionModal({ isOpen, onRequestClose }: NewTransactionMo
     const [type, setType] = useState('deposit')     // para armazenar a informac de qual botao foi selecionado
     
     // para adicionar uma nova transacao na api
-    function handleCreateNewTransaction(event: FormEvent) {
+    async function handleCreateNewTransaction(event: FormEvent) {
         event.preventDefault();     // previne reset do form
-        createTransaction ({
+        await createTransaction ({
             title,
             amount,
             category,
             type
         })
+
+        // resetando os campos do modal
+        setTitle('')
+        setAmount(0)
+        setCategory('')
+        setType('deposit')
+
+        onRequestClose();       // fecha a janela modal apos a transacao ser criada
 
         // verificando os dados inseridos no form
         console.log(title, amount, category, type)
