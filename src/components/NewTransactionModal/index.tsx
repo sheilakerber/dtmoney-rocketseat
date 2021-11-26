@@ -19,7 +19,7 @@ export function NewTransactionModal({ isOpen, onRequestClose }: NewTransactionMo
     const [type, setType] = useState('deposit')     // para armazenar a informac de qual botao foi selecionado
     
     // para adicionar uma nova transacao na api
-    function handleNewTransaction(event: FormEvent) {
+    function handleCreateNewTransaction(event: FormEvent) {
         event.preventDefault();     // previne reset do form
 
         // verificando os dados inseridos no form
@@ -27,7 +27,7 @@ export function NewTransactionModal({ isOpen, onRequestClose }: NewTransactionMo
             title, value, category, type
         )
 
-        // passando os salvos para a api
+        // passando dados os salvos para a api
         const data = {
             title,
             value,
@@ -55,7 +55,7 @@ export function NewTransactionModal({ isOpen, onRequestClose }: NewTransactionMo
                 <img src={closeImg} alt="Fechar modal" />
             </button>
 
-            <Container onSubmit={handleNewTransaction} >
+            <Container onSubmit={handleCreateNewTransaction} >
                 <h2>Cadastrar transação</h2>
 
                 <input

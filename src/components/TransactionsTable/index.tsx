@@ -1,11 +1,24 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { api } from "../../services/api";
 import { Container } from "./styles";
 
+interface Transaction {
+    id: number,
+    title: string,
+    amount: number,
+    type: string,
+    category: string,
+    createdAt: string
+}
+
+
 export function TransactionsTable() {
+
+    const [transactions, setTransactions] = useState<Transaction[]>([])
+
     useEffect(() => {
         api.get('transactions')
-        .then(response => console.log(response.data))
+        .then(response => setTransactions(response.data.transactions))   //apresentando as transacoes no html
     }, [])
 
     return (
@@ -21,26 +34,20 @@ export function TransactionsTable() {
                 </thead>
 
                 <tbody>
-                    <tr>
-                        <td>Desenvolvimento website 1</td>
-                        <td className="deposit">R$ 12.000</td>
-                        <td>Trabalho</td>
-                        <td>20/02/2021</td>
-                    </tr>
+                    {transactions.map(transaction => {
+                        return (
+                            <tr key={transaction.id}>
+                                <td>{transaction.title}</td>
+                                <td className={transaction.type}>{transaction.amount}</td>
+                                <td>{transaction.category}</td>
+                                <td>{transaction.createdAt}</td>
+                            </tr>
+                        )
+                    })}
 
-                    <tr>
-                        <td>Desenvolvimento website 2</td>
-                        <td className="deposit">R$ 5.000</td>
-                        <td>Trabalho</td>
-                        <td>12/07/2021</td>
-                    </tr>
+                   
 
-                    <tr>
-                        <td>Aluguel</td>
-                        <td className="withdraw"> - R$ 1.000</td>
-                        <td>Moradia</td>
-                        <td>30/02/2021</td>
-                    </tr>
+                  
                 </tbody>
             </table>
         </Container>
